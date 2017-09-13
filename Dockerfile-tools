@@ -1,0 +1,15 @@
+FROM ibmjava:8-sdk
+
+MAINTAINER IBM Java engineering at IBM Cloud
+
+RUN sed -i 's/http:\/\/archive\.ubuntu\.com\/ubuntu\//http:\/\/mirrors\.163\.com\/ubuntu\//g' /etc/apt/sources.list
+
+
+RUN apt-get update && apt-get install -y maven --fix-missing
+
+ENV PATH /project/target/liberty/wlp/bin/:$PATH
+
+ARG bx_dev_userid=root
+RUN BX_DEV_USERID=$bx_dev_userid
+RUN if [ $bx_dev_userid != "root" ]; then useradd -ms /bin/bash $bx_dev_userid; fi
+
