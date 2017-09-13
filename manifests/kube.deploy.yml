@@ -38,6 +38,41 @@ spec:
             path: /training001/health
             port: 9080
           initialDelaySeconds: 20
+        env:
+         - name: MB_KEYSTORE_PASSWORD
+           valueFrom:
+             secretKeyRef:
+               name: mb-keystore-password
+               key: password
+         - name: MB_TRUSTSTORE_PASSWORD
+           valueFrom:
+             secretKeyRef:
+               name: mb-truststore-password
+               key: password
+        volumeMounts:
+         - name: keystores
+           mountPath: /etc/wlp/config/keystore
+           readOnly: true
+         - name: truststores
+           mountPath: /etc/wlp/config/truststore
+           readOnly: true
+         - name: liberty-logging-config
+           mountPath: /config/configDropins
+      volumes:
+       - name: keystores
+         secret:
+           secretName: mb-keystore
+       - name: truststores
+         secret:
+           secretName: mb-truststore
+       - name: liberty-logging-config
+         configMap:
+           name: liberty-logging-config
+           items:
+             - key: keystore.xml
+               path: defaults/keystore.xml
+             - key: logging.xml
+               path: defaults/logging.xml
         # resources:
         #   requests:
         #     cpu: 100m
