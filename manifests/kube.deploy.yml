@@ -20,7 +20,8 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: "training001-deployment"
+  name: "training001-deployment",
+  namespace: "default"
 spec:
   # this replicas value is default
   # modify it according to your case
